@@ -22,6 +22,10 @@ public class HelloController {
   public String greet(@RequestParam String name) {
     return name + "님 , 환영합니다";
   }
+  @GetMapping("/memo")
+  public Memo getMemo() {
+    return new Memo(1l, "첫 메모");
+  }
 }
 
 
