@@ -1,6 +1,7 @@
 package com.example.hello_api;
 
 public class Memo {
+  public Memo() {}
   private Long id;
   private String content;
 
@@ -12,4 +13,6 @@ public class Memo {
     {return id;}
   public String getContent()
     {return content;}
+  public  void setContent(String content)
+    {this.content = content;}
 }
