@@ -21,6 +21,15 @@ public class HelloController {
   public String helloName(@PathVariable String name) {
     return "Hello " + name + "님!";
   }
+  @PutMapping("/memos/{id}")
+  public Memo updateMemo(@PathVariable long id, @RequestBody Memo memo) {
+    return memoService.update(id, memo.getContent());
+  }
+
+  @GetMapping("/memos/search")
+  public List<Memo> searchMemos(@RequestParam String keyword) {
+    return memoService.search(keyword);
+  }
 
   @GetMapping("/greet")
   public String greet(@RequestParam String name) {

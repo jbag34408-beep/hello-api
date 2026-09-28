@@ -1,6 +1,9 @@
 package com.example.hello_api;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -23,10 +26,26 @@ public class MemoService {
   }
 
   public Memo findById(Long id) {
-    return memoRepository.findById(id).orElse(null);
+    return memoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "메모를 찾을 수 없습니다. id=" + id));
+  }
+
+  public Memo update(Long id, String content) {
+    Memo memo = findById(id);
+    memo.setContent(content);
+    return memoRepository.save(memo);
   }
 
   public void deleteById(Long id) {
+    if (!memoRepository.existsById(id)) {
+      throw new ResponseStatusException(
+              HttpStatus.NOT_FOUND, "메모를 찾을 수 없습니다. id=" + id);
+    }
     memoRepository.deleteById(id);
+  }
+
+  public List<Memo> search(String keyword) {
+    return memoRepository.findByContentContaining(keyword);
   }
 }
