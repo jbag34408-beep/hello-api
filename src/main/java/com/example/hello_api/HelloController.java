@@ -3,6 +3,8 @@ package com.example.hello_api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class HelloController {
@@ -73,5 +75,13 @@ public class HelloController {
   @GetMapping("/categories")
   public List<Category> getCategories() {
     return categoryRepository.findAll();
+  }
+
+  @PutMapping("/memos/{memoId}/category/{categoryId}")
+  public Memo assignCategory(@PathVariable long memoId, @PathVariable long categoryId) {
+    Category category = categoryRepository.findById(categoryId)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "카테고리를 찾을 수 없습니다. id=" + categoryId));
+    return memoService.assignCategory(memoId, category);
   }
 }

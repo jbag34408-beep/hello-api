@@ -48,4 +48,9 @@ public class MemoService {
   public List<Memo> search(String keyword) {
     return memoRepository.findByContentContaining(keyword);
   }
+  public Memo assignCategory(Long id, Category category) {
+    Memo memo = findById(id);
+    memo.setCategory(category);
+    return memoRepository.save(memo);
+  }
 }
